@@ -1,16 +1,17 @@
 angular.module('todoListApp', [])
-  .controller('mainCtrl', function($scope) {
-    $scope.helloWorld = function() {
-      console.log('Hello there! This is the helloWorld controller function, in the mainCtrl!');
+  .controller('mainCtrl', function($scope, dataService) {
+
+    dataService.getTodos(function(response) {
+      console.log(response.data);
+      $scope.todos = response.data;
+    });
+
+  })
+  .service('dataService', function($http) {
+
+    this.getTodos = function(callback) {
+      $http.get('mock/todos.json')
+        .then(callback);
     };
 
-    $scope.todos = [
-      {name: 'clean the house'},
-      {name: 'water the dog'},
-      {name: 'feed the lawn'},
-      {name: 'pay bills'},
-      {name: 'swim'},
-      {name: 'run'}
-    ];
-    
   });
